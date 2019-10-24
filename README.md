@@ -1,5 +1,5 @@
    
-1. We add our gherkin to the addition_teacher.feature file
+1. We add our gherkin to the calculator.feature file
 
         Feature: Calculator
         Scenario Outline: Expression Validation
