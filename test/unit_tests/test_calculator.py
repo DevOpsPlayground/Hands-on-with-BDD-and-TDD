@@ -3,13 +3,11 @@ from assertpy import assert_that
 
 
 class TestOperation(TestCase):
-    pass
+    def test_operation(self):
+        pass
 
 
 class TestHandler(TestCase):
-    pass
-
-
-class TestCalculator(TestCase):
-    pass
+    def test_addition_handler(self):
+        pass
 

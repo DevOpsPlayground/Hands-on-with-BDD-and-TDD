@@ -1,5 +1,5 @@
    
-1. We add our gherkin to the calculator.feature file
+1. We have our gherkin in the calculator.feature file
 
         Feature: Calculator
         Scenario Outline: Expression Validation
@@ -16,7 +16,7 @@
             |   2 + 101 = 3             |   False   |
             |   2 + 1093 = 12           |   False   |
 
-2. We now have to write implementations for the steps of our feature file e.g. for When I enter '2+1=3'
+2. We have implementations for the steps of our feature file e.g. for When I enter '2+1=3'
 
         @given(u'I am a user of the Calculator App')
         def step_impl(context):
@@ -41,17 +41,14 @@
 
 5. So we are going to do this development under our src folder
 
-8. Its at this point where TDD is usually introduced alongside BDD and that's why we have our unit_tests folder and the test_addition_teacher.py file in it.
+6. Its at this point where TDD is usually introduced alongside BDD and that's why we have our unit_tests folder and the test_calculator.py file in it.
 
-9. We can write tests to help us along developing the each bit (unit) of our overall feature
+7. We can write tests to help us along developing the each bit (unit) of our overall feature
 
-10. Let's say we want our Calculator to look like this and be a class:
+8. Let's say we want our Calculator to look like this and be a class:
 
            OPERATION_HANDLERS = [
-                AdditionHandler(),
-                SubtractionHandler(),
-                MultiplicationHandler(),
-                DivisionHandler()
+                AdditionHandler()
             ]
 
 
@@ -61,23 +58,52 @@
                     if operation.operand == handler.eligible_operand:
                         return handler.check_operation_is_correct(operation)
                         
-  The validate method there is what would do all the magic. So let's start building out our functionality
   
-  We are setting up different handler classes for each mathematical expression
-  
-11. Let's start with addition and write a test for what we want from our AdditionHandler class
+9.  Let's now look at building out our functionality
 
-            def test_addition_handler(self):
-                parameters = [
-                    ('1 + 1 = 2', True),
-                    ('2 + 20 = 4', False),
-                    ('5 + 7 = 2', False)
-                ]
-        
-                for string_input, expected in parameters:
-                    with self.subTest(input=string_input):
-                        op = Operation(string_input)
-                        assert_that(AdditionHandler().check_operation_is_correct(op)).is_equal_to(expected)
+10. Let's write a test for what we want from our Operation class
+
+            class TestOperation(TestCase):
+                def test_operation(self):
+                    operation = Operation('1 + 2 = 3')
+                    assert_that(operation.lhs).is_equal_to(1)
+                    assert_that(operation.rhs).is_equal_to(2)
+                    assert_that(operation.operand).is_equal_to('+')
+                    assert_that(operation.result).is_equal_to(3)
+                   
+                   
+10. Then we can develop our Operations class in operations.py
+            
+            REGEX = r'(\d+) ([+-/*]) (\d+) = (\d+)'
+
+            class Operation:
+               def __init__(self, string_input):
+                  self.parsed_input = self.parse_input(string_input)
+                  self.lhs = self.parsed_input[1]
+                  self.operand = self.parsed_input[2]
+                  self.rhs = self.parsed_input[3]
+                  self.result = self.parsed_input[4]
+
+11. We can then have tests for our handler
+
+            class TestHandler(TestCase):
+                def test_addition_handler(self):
+                    handler = AdditionHandler()
+                    operation = Operation('1 + 2 = 3')
+                    output = handler.check_operation_is_correct(operation)
+                    assert_that(handler.eligible_operand).is_equal_to('+')
+                    assert_that(output).is_equal_to(True)
+                    
+12. Then we can build the handler
+            
+            class AdditionHandler:
+                def __init__(self, operand):
+                    self.eligible_operand = operand
+                    
+                def check_operation_is_correct(operation):
+                    real_result = operation.lhs + operation.rhs
+                    return real_result == operation.result
+
 
 
 IMPORTANT COMMANDS:
