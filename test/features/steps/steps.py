@@ -1,6 +1,7 @@
 from src.calculator import Calculator
 from src.operation import Operation
 from behave import given, when, then
+from assertpy import assert_that
 
 
 @given(u'I am a user of the Calculator App')

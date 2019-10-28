@@ -1,5 +1,7 @@
 from unittest import TestCase
 from assertpy import assert_that
+from src.operation import Operation
+from src.handler import AdditionHandler
 
 
 class TestOperation(TestCase):
