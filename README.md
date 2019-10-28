@@ -83,6 +83,11 @@
                   self.operand = self.parsed_input[2]
                   self.rhs = self.parsed_input[3]
                   self.result = self.parsed_input[4]
+                  
+               def parse_input(string_input):
+                  pattern = re.compile(REGEX)
+                  parsed_input = pattern.match(string_input)
+                  return parsed_input
 
 11. We can then have tests for our handler
 
